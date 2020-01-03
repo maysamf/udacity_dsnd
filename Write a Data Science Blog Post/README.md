@@ -31,9 +31,10 @@ Finally, I tried to use a simple ML algorithm to predict the ratings of a movie 
 **movies.dat**: Movies information are in this file. </br>
 **ratings.dat**: All the ratings are contained in this file. </br>
 **users.dat**: User information are in this file. </br>
+**DataInfo**: README file from the original dataset. It contain a description or the data. </br>
 
 ## Results <a name="results"></a>
-The main findings of the code can be found at the post available [here]()
+The main findings of the code can be found at the post available [here](https://medium.com/@MaysamF/what-are-the-top-rated-25-movies-1a34d52badbe?sk=60e435c7d0dd9bce64dd00b013a50588)
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 Must give credit to GroupLens Research for the data. You can find the Licensing for the data and other descriptive information about MovieLens 1M Dataset [here](https://grouplens.org/datasets/movielens/1m/).
