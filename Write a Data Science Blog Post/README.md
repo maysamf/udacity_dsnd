@@ -34,7 +34,12 @@ Finally, I tried to use a simple ML algorithm to predict the ratings of a movie 
 **DataInfo**: README file from the original dataset. It contain a description or the data. </br>
 
 ## Results <a name="results"></a>
-The main findings of the code can be found at the post available [here](https://medium.com/@MaysamF/what-are-the-top-rated-25-movies-1a34d52badbe?sk=60e435c7d0dd9bce64dd00b013a50588)
+The main findings of the analysis are:</br>
+* More than half of the users were between 18–34 years old. </br>
+* Most of the ratings of Toy Story 1995 are above 3. </br>
+* The Shawshank Redemption is the highest rated movie. </br>
+
+For more detailes, please check the post available [here](https://medium.com/@MaysamF/what-are-the-top-rated-25-movies-1a34d52badbe?sk=60e435c7d0dd9bce64dd00b013a50588)
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 Must give credit to GroupLens Research for the data. You can find the Licensing for the data and other descriptive information about MovieLens 1M Dataset [here](https://grouplens.org/datasets/movielens/1m/).
