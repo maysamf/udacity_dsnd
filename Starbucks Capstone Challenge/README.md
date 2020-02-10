@@ -16,7 +16,7 @@ This code runs with Python version 3.* and there should be no necessary librarie
 
 ## Project Motivation <a name="motivation"></a>
 
-This is part of Udacity Nanodegree Capstone Project. The aim is develop a set of charecterstics to determine which customers complete which offer type. To explore the customers of Starbucks and their behavior regarding the offers they recieve. Also, to check if we can predict what type of offer is the best for each user based on their demographics.
+This is part of Udacity Nanodegree Capstone Project. The aim is develop a set of characteristics to determine which customers complete which offer type. To explore the customers of Starbucks and their behavior regarding the offers they receive. Also, to check if we can predict what type of offer is the best for each user based on their demographics.
 
 ## File Description <a name="files"></a>
 
@@ -33,7 +33,7 @@ The main findings of the analysis are:</br>
 *  </br>
 * The models selected were overfitted to the dataset even though the models were simple. Thus, no model were selected to predict the offer type. </br>
 
-For more detailes, please check the post available [here]()
+For more details, please check the post available [here](https://medium.com/@MaysamF/starbucks-capstone-challenge-9003c9422a76)
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
-Must give credit to Starbucks for the data and Udacity for providing the opportunity to perform this project. 
+Must give credit to Starbucks for the data and Udacity for providing the opportunity to perform this project.
