@@ -13155,11 +13155,12 @@ div#notebook {
 <span class="o">%</span> <span class="n">matplotlib</span> <span class="n">inline</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">MinMaxScaler</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">accuracy_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">GridSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">f1_score</span>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
 <span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <span class="n">DecisionTreeClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
 </pre></div>
 
@@ -13705,8 +13706,8 @@ div#notebook {
       <th>reward</th>
       <th>mobile</th>
       <th>social</th>
-      <th>web</th>
       <th>email</th>
+      <th>web</th>
     </tr>
   </thead>
   <tbody>
@@ -13720,8 +13721,8 @@ div#notebook {
       <td>10</td>
       <td>1</td>
       <td>1</td>
-      <td>0</td>
       <td>1</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>1</th>
@@ -13838,8 +13839,8 @@ offer_type    0.0
 reward        0.0
 mobile        0.0
 social        0.0
-web           0.0
 email         0.0
+web           0.0
 dtype: float64</pre>
 </div>
 
@@ -13914,23 +13915,11 @@ dtype: float64</pre>
       <th>reward</th>
       <th>mobile</th>
       <th>social</th>
-      <th>web</th>
       <th>email</th>
+      <th>web</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th>0</th>
-      <td>10</td>
-      <td>7</td>
-      <td>ae264e3637204a6fb9bb56bc8210ddfd</td>
-      <td>bogo</td>
-      <td>10</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
     <tr>
       <th>2</th>
       <td>0</td>
@@ -13938,6 +13927,30 @@ dtype: float64</pre>
       <td>3f207df678b143eea3cee63160fa8bed</td>
       <td>informational</td>
       <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>7</td>
+      <td>7</td>
+      <td>2298d6c36e964ae4a3e7e9706d1fb8c2</td>
+      <td>discount</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5</td>
+      <td>7</td>
+      <td>9b98b8c7a33c4b65b9aebfe6a799e6d9</td>
+      <td>bogo</td>
+      <td>5</td>
       <td>1</td>
       <td>0</td>
       <td>1</td>
@@ -13956,27 +13969,15 @@ dtype: float64</pre>
       <td>1</td>
     </tr>
     <tr>
-      <th>1</th>
+      <th>4</th>
+      <td>20</td>
       <td>10</td>
+      <td>0b1e1539f2cc45b7b9fa7c272da2e1d7</td>
+      <td>discount</td>
       <td>5</td>
-      <td>4d5c57ea9a6940dd891ad53e9dbe8da0</td>
-      <td>bogo</td>
-      <td>10</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>7</th>
       <td>0</td>
-      <td>3</td>
-      <td>5a8bc65990b245e5a138643cd4eb9837</td>
-      <td>informational</td>
       <td>0</td>
       <td>1</td>
-      <td>1</td>
-      <td>0</td>
       <td>1</td>
     </tr>
   </tbody>
@@ -14047,31 +14048,55 @@ dtype: float64</pre>
       <th>offer_reward</th>
       <th>mobile</th>
       <th>social</th>
-      <th>web</th>
       <th>email</th>
+      <th>web</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>10</td>
-      <td>7</td>
-      <td>ae264e3637204a6fb9bb56bc8210ddfd</td>
-      <td>bogo</td>
-      <td>10</td>
-      <td>1</td>
+      <th>2</th>
+      <td>0</td>
+      <td>4</td>
+      <td>3f207df678b143eea3cee63160fa8bed</td>
+      <td>informational</td>
+      <td>0</td>
       <td>1</td>
       <td>0</td>
       <td>1</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>5</td>
+      <th>5</th>
       <td>7</td>
-      <td>9b98b8c7a33c4b65b9aebfe6a799e6d9</td>
-      <td>bogo</td>
-      <td>5</td>
+      <td>7</td>
+      <td>2298d6c36e964ae4a3e7e9706d1fb8c2</td>
+      <td>discount</td>
+      <td>3</td>
       <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>7</td>
+      <td>2906b810c7d4411798c6938adc9daaa5</td>
+      <td>discount</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>20</td>
+      <td>10</td>
+      <td>0b1e1539f2cc45b7b9fa7c272da2e1d7</td>
+      <td>discount</td>
+      <td>5</td>
+      <td>0</td>
       <td>0</td>
       <td>1</td>
       <td>1</td>
@@ -14085,30 +14110,6 @@ dtype: float64</pre>
       <td>5</td>
       <td>1</td>
       <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>0</td>
-      <td>3</td>
-      <td>5a8bc65990b245e5a138643cd4eb9837</td>
-      <td>informational</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>20</td>
-      <td>10</td>
-      <td>0b1e1539f2cc45b7b9fa7c272da2e1d7</td>
-      <td>discount</td>
-      <td>5</td>
-      <td>0</td>
-      <td>0</td>
       <td>1</td>
       <td>1</td>
     </tr>
@@ -14180,84 +14181,84 @@ dtype: float64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>5328</th>
-      <td>77</td>
-      <td>20140720</td>
-      <td>M</td>
-      <td>9acbb111ba2f452cbbafabaf49138377</td>
-      <td>44000.0</td>
-    </tr>
-    <tr>
-      <th>1211</th>
-      <td>75</td>
-      <td>20151117</td>
-      <td>F</td>
-      <td>b284e507f8b5453ba2aa40afb7ad565f</td>
-      <td>72000.0</td>
-    </tr>
-    <tr>
-      <th>15239</th>
-      <td>83</td>
-      <td>20160307</td>
-      <td>F</td>
-      <td>b544672b0aa64c979eaa0e63ce662b61</td>
-      <td>64000.0</td>
-    </tr>
-    <tr>
-      <th>2266</th>
-      <td>51</td>
-      <td>20160524</td>
-      <td>M</td>
-      <td>fee2d799672d4f81bfa3237207290f79</td>
-      <td>74000.0</td>
-    </tr>
-    <tr>
-      <th>607</th>
-      <td>53</td>
-      <td>20160114</td>
-      <td>F</td>
-      <td>11d7a9296e35432f8a34b21e337529fb</td>
-      <td>100000.0</td>
-    </tr>
-    <tr>
-      <th>12844</th>
-      <td>27</td>
-      <td>20180223</td>
-      <td>F</td>
-      <td>97c1300e59de49a499cf33f476be1fb0</td>
-      <td>36000.0</td>
-    </tr>
-    <tr>
-      <th>5227</th>
-      <td>47</td>
-      <td>20161210</td>
-      <td>F</td>
-      <td>06131d1c0a154320bd9b24af9f51f76d</td>
-      <td>59000.0</td>
-    </tr>
-    <tr>
-      <th>3651</th>
+      <th>16156</th>
       <td>118</td>
-      <td>20180404</td>
+      <td>20160221</td>
       <td>None</td>
-      <td>9f3a4c78181f4a138f0130ea027a2f3d</td>
+      <td>59fd39ac5ef149fe987d7a1f49a47279</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>13150</th>
-      <td>33</td>
-      <td>20160128</td>
+      <th>16265</th>
+      <td>51</td>
+      <td>20161214</td>
       <td>M</td>
-      <td>ce15a44d0b544b788e4b8c553a8829d8</td>
-      <td>30000.0</td>
+      <td>27586221a0a5482b960ac41506d2c316</td>
+      <td>114000.0</td>
     </tr>
     <tr>
-      <th>7986</th>
-      <td>30</td>
-      <td>20180607</td>
+      <th>12278</th>
+      <td>70</td>
+      <td>20180429</td>
       <td>F</td>
-      <td>3191b724d3fc4f4d9c5c9bf7ff66e4e6</td>
-      <td>32000.0</td>
+      <td>3ff3ba62ae5b46e3b81d6c505bbae67c</td>
+      <td>97000.0</td>
+    </tr>
+    <tr>
+      <th>4410</th>
+      <td>78</td>
+      <td>20160801</td>
+      <td>F</td>
+      <td>9dcfbbcd176a4e06ae89108847b758af</td>
+      <td>115000.0</td>
+    </tr>
+    <tr>
+      <th>6590</th>
+      <td>118</td>
+      <td>20180501</td>
+      <td>None</td>
+      <td>13d4cf14f2ce47249b3cfb8a1128a7d1</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4143</th>
+      <td>69</td>
+      <td>20180130</td>
+      <td>M</td>
+      <td>c4c72c2014d042e080972f87df087516</td>
+      <td>110000.0</td>
+    </tr>
+    <tr>
+      <th>6240</th>
+      <td>54</td>
+      <td>20171220</td>
+      <td>M</td>
+      <td>2443e88307574f2e84baa52e41142232</td>
+      <td>49000.0</td>
+    </tr>
+    <tr>
+      <th>9198</th>
+      <td>77</td>
+      <td>20160519</td>
+      <td>M</td>
+      <td>d814201add28441193aafab06066faea</td>
+      <td>80000.0</td>
+    </tr>
+    <tr>
+      <th>12237</th>
+      <td>73</td>
+      <td>20170205</td>
+      <td>M</td>
+      <td>d210546d39034722ae351b45b0b56d25</td>
+      <td>43000.0</td>
+    </tr>
+    <tr>
+      <th>4364</th>
+      <td>56</td>
+      <td>20170220</td>
+      <td>F</td>
+      <td>f57a5103c7ce4790ba047ffbe9e0806f</td>
+      <td>59000.0</td>
     </tr>
   </tbody>
 </table>
@@ -14513,44 +14514,44 @@ dtype: float64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>10127</th>
-      <td>51</td>
-      <td>20180721</td>
+      <th>3852</th>
+      <td>69</td>
+      <td>20171109</td>
+      <td>1</td>
+      <td>57f4db3b5b2a46b8b06db07840a02fb5</td>
+      <td>48000.0</td>
+    </tr>
+    <tr>
+      <th>7471</th>
+      <td>34</td>
+      <td>20170801</td>
+      <td>1</td>
+      <td>da9e7cdd4b0e4978b03f92d1245c8c60</td>
+      <td>34000.0</td>
+    </tr>
+    <tr>
+      <th>13148</th>
+      <td>56</td>
+      <td>20171207</td>
       <td>0</td>
-      <td>d784ab2714b94720870c250c691308a0</td>
-      <td>47000.0</td>
+      <td>d2786d4d61344ff0a8578d02799d339a</td>
+      <td>48000.0</td>
     </tr>
     <tr>
-      <th>10914</th>
-      <td>79</td>
-      <td>20170628</td>
+      <th>4794</th>
+      <td>62</td>
+      <td>20170323</td>
       <td>1</td>
-      <td>6747faa91f384df58721b0f942a1f76c</td>
-      <td>105000.0</td>
+      <td>0bfc794e24c146ceb5c899579e77b940</td>
+      <td>78000.0</td>
     </tr>
     <tr>
-      <th>1497</th>
-      <td>26</td>
-      <td>20130930</td>
+      <th>12024</th>
+      <td>62</td>
+      <td>20180323</td>
       <td>0</td>
-      <td>6860d544db4d41debe162f7f89747f35</td>
-      <td>56000.0</td>
-    </tr>
-    <tr>
-      <th>1989</th>
-      <td>52</td>
-      <td>20180423</td>
-      <td>1</td>
-      <td>37f62826a6564d34a61b146ea6e90887</td>
-      <td>65000.0</td>
-    </tr>
-    <tr>
-      <th>11621</th>
-      <td>39</td>
-      <td>20150915</td>
-      <td>1</td>
-      <td>2a20232e16304ded9a6795390c7b182e</td>
-      <td>44000.0</td>
+      <td>f2d71ad71717482db42869f40c0769ec</td>
+      <td>41000.0</td>
     </tr>
   </tbody>
 </table>
@@ -14624,44 +14625,44 @@ dtype: float64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>8701</th>
-      <td>81</td>
-      <td>2018-01-05</td>
-      <td>1</td>
-      <td>acef018f388441a6a8c192906b780fb4</td>
-      <td>110000.0</td>
-    </tr>
-    <tr>
-      <th>6042</th>
-      <td>72</td>
-      <td>2017-11-22</td>
+      <th>11693</th>
+      <td>38</td>
+      <td>2017-09-02</td>
       <td>0</td>
-      <td>96ef48731cec466595fb2f9930694d53</td>
-      <td>62000.0</td>
+      <td>bceeed6af47f49359784b3114791b8f1</td>
+      <td>55000.0</td>
     </tr>
     <tr>
-      <th>3285</th>
-      <td>94</td>
-      <td>2016-09-29</td>
-      <td>1</td>
-      <td>a104f5f8f470487693d626d36317dcf7</td>
-      <td>31000.0</td>
-    </tr>
-    <tr>
-      <th>1565</th>
-      <td>54</td>
-      <td>2016-12-08</td>
-      <td>1</td>
-      <td>e70d2311d88c41b8abd04bb3e3039e91</td>
-      <td>74000.0</td>
-    </tr>
-    <tr>
-      <th>3832</th>
-      <td>52</td>
-      <td>2017-08-15</td>
+      <th>5661</th>
+      <td>59</td>
+      <td>2017-03-02</td>
       <td>0</td>
-      <td>64c72566e51c4ccbb1847794e1c9765e</td>
-      <td>31000.0</td>
+      <td>e4b38079bc01416a9e798077e39d5dfc</td>
+      <td>71000.0</td>
+    </tr>
+    <tr>
+      <th>7521</th>
+      <td>46</td>
+      <td>2017-11-13</td>
+      <td>1</td>
+      <td>e7378718486c40f2817ac5e6ea7e15d0</td>
+      <td>50000.0</td>
+    </tr>
+    <tr>
+      <th>7609</th>
+      <td>40</td>
+      <td>2016-07-27</td>
+      <td>0</td>
+      <td>daad151d84664dd6a4809ab8f05af690</td>
+      <td>86000.0</td>
+    </tr>
+    <tr>
+      <th>1819</th>
+      <td>41</td>
+      <td>2017-11-24</td>
+      <td>0</td>
+      <td>147118864d59460989e5db374690d1bf</td>
+      <td>65000.0</td>
     </tr>
   </tbody>
 </table>
@@ -14751,59 +14752,59 @@ dtype: float64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>609</th>
-      <td>43</td>
-      <td>2014-01-28</td>
-      <td>0</td>
-      <td>1f5c961416e64c5d88098b02b1bdf246</td>
-      <td>41000.0</td>
-      <td>2014</td>
+      <th>13457</th>
+      <td>26</td>
+      <td>2017-09-28</td>
       <td>1</td>
+      <td>f86eee2ee5aa47059aeafda02dbb2579</td>
+      <td>41000.0</td>
+      <td>2017</td>
+      <td>9</td>
       <td>28</td>
     </tr>
     <tr>
-      <th>4181</th>
-      <td>77</td>
-      <td>2013-08-13</td>
+      <th>10882</th>
+      <td>53</td>
+      <td>2017-08-20</td>
       <td>0</td>
-      <td>ab1d8ca888784c1eafebf0c51e1b6e3e</td>
-      <td>77000.0</td>
-      <td>2013</td>
+      <td>dcadc299e3914526acf3eac4815b7930</td>
+      <td>45000.0</td>
+      <td>2017</td>
       <td>8</td>
-      <td>13</td>
+      <td>20</td>
     </tr>
     <tr>
-      <th>8619</th>
-      <td>58</td>
-      <td>2016-02-15</td>
-      <td>0</td>
-      <td>7b52863118c2444ba6e9ab332f70c1bd</td>
-      <td>103000.0</td>
-      <td>2016</td>
-      <td>2</td>
-      <td>15</td>
-    </tr>
-    <tr>
-      <th>3943</th>
-      <td>78</td>
-      <td>2015-12-31</td>
-      <td>0</td>
-      <td>a216df544a944c2f9796f44e20d0de78</td>
-      <td>93000.0</td>
-      <td>2015</td>
-      <td>12</td>
-      <td>31</td>
-    </tr>
-    <tr>
-      <th>2279</th>
-      <td>30</td>
-      <td>2016-04-26</td>
+      <th>3468</th>
+      <td>62</td>
+      <td>2017-09-24</td>
       <td>1</td>
-      <td>174a4dbebb74441da5adf64bca5e5c36</td>
+      <td>3a87d23281d14467af49851aae1c538a</td>
+      <td>72000.0</td>
+      <td>2017</td>
+      <td>9</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>11442</th>
+      <td>60</td>
+      <td>2018-01-09</td>
+      <td>1</td>
+      <td>65824e7a3bd14f29a344c0a9f3f47e8d</td>
       <td>55000.0</td>
-      <td>2016</td>
-      <td>4</td>
-      <td>26</td>
+      <td>2018</td>
+      <td>1</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>9955</th>
+      <td>69</td>
+      <td>2018-07-06</td>
+      <td>0</td>
+      <td>7bd0d9a569a74eb3949955b4548f34db</td>
+      <td>61000.0</td>
+      <td>2018</td>
+      <td>7</td>
+      <td>6</td>
     </tr>
   </tbody>
 </table>
@@ -14872,39 +14873,39 @@ dtype: float64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>251761</th>
-      <td>offer received</td>
-      <td>85634b9657234480a332e9b3f13a465e</td>
-      <td>576</td>
-      <td>{'offer id': '4d5c57ea9a6940dd891ad53e9dbe8da0'}</td>
-    </tr>
-    <tr>
-      <th>263770</th>
+      <th>188419</th>
       <td>transaction</td>
-      <td>966ae5cd20fc48b8b41cbd981263aff6</td>
-      <td>582</td>
-      <td>{'amount': 15.32}</td>
+      <td>09064dd864994ff19040ad8c2b2572ee</td>
+      <td>456</td>
+      <td>{'amount': 12.28}</td>
     </tr>
     <tr>
-      <th>283050</th>
-      <td>offer viewed</td>
-      <td>5917ca26c4984c5f8e950da09aaf46ce</td>
-      <td>624</td>
-      <td>{'offer id': '4d5c57ea9a6940dd891ad53e9dbe8da0'}</td>
-    </tr>
-    <tr>
-      <th>271355</th>
-      <td>transaction</td>
-      <td>c654023b451b49ce9ef04a8b56664a9c</td>
-      <td>594</td>
-      <td>{'amount': 14.92}</td>
-    </tr>
-    <tr>
-      <th>212898</th>
+      <th>214067</th>
       <td>offer received</td>
-      <td>638940b23fa540c69cbe92c000b0ff70</td>
+      <td>35e4e3fce7054c91adb114c4a9320c39</td>
       <td>504</td>
-      <td>{'offer id': 'ae264e3637204a6fb9bb56bc8210ddfd'}</td>
+      <td>{'offer id': '3f207df678b143eea3cee63160fa8bed'}</td>
+    </tr>
+    <tr>
+      <th>294255</th>
+      <td>transaction</td>
+      <td>65c97638799b492db492986bcd100c4a</td>
+      <td>660</td>
+      <td>{'amount': 3.56}</td>
+    </tr>
+    <tr>
+      <th>236061</th>
+      <td>offer completed</td>
+      <td>0e03241e165b4686a2e5e546d499e637</td>
+      <td>546</td>
+      <td>{'offer_id': '9b98b8c7a33c4b65b9aebfe6a799e6d9...</td>
+    </tr>
+    <tr>
+      <th>37602</th>
+      <td>transaction</td>
+      <td>565496e182914da8a2750e1cace612a0</td>
+      <td>78</td>
+      <td>{'amount': 32.76}</td>
     </tr>
   </tbody>
 </table>
@@ -15101,91 +15102,91 @@ dtype: float64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>200469</th>
-      <td>transaction</td>
-      <td>3b4d2c0594a04f13b7b0eca54cb3435a</td>
-      <td>498</td>
-      <td></td>
-      <td>4</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>106255</th>
-      <td>transaction</td>
-      <td>8296312262cd4cc19872e53ad1e10345</td>
-      <td>306</td>
-      <td></td>
+      <th>169491</th>
+      <td>offer viewed</td>
+      <td>5be5efe41a974a2aafce169cbb6f1cc9</td>
+      <td>414</td>
+      <td>2298d6c36e964ae4a3e7e9706d1fb8c2</td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>184426</th>
+      <th>274109</th>
       <td>transaction</td>
-      <td>0e2a283e9c2247678cd7fb69009b13ac</td>
-      <td>444</td>
-      <td></td>
-      <td>23</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>280076</th>
-      <td>offer completed</td>
-      <td>1cbc184a0c1e4bb2b42ef19f6bd0d031</td>
-      <td>618</td>
-      <td>9b98b8c7a33c4b65b9aebfe6a799e6d9</td>
-      <td>0</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>142634</th>
-      <td>transaction</td>
-      <td>905de0fd4a18487bac15b2d95f2c1e3d</td>
-      <td>378</td>
+      <td>51b0f831aa104090be06c964881db04a</td>
+      <td>600</td>
       <td></td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>206538</th>
+      <th>113896</th>
       <td>offer received</td>
-      <td>94f30e79709c4986b42a5a210c2bac4e</td>
-      <td>504</td>
-      <td>4d5c57ea9a6940dd891ad53e9dbe8da0</td>
+      <td>b6f5973f9af041038f4eea606c2b9234</td>
+      <td>336</td>
+      <td>ae264e3637204a6fb9bb56bc8210ddfd</td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>5020</th>
-      <td>offer received</td>
-      <td>9ead4386a1c141fcaec06f864132df0c</td>
-      <td>0</td>
-      <td>fafdcd668e3743c1bb461111dcafc2a4</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>141617</th>
+      <th>91429</th>
       <td>transaction</td>
-      <td>25ff4f5d2d354e599980dc5fd3f50021</td>
-      <td>378</td>
-      <td></td>
-      <td>3</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>216099</th>
-      <td>transaction</td>
-      <td>2526704eb7f24f4a8b1c2487912baa17</td>
-      <td>504</td>
+      <td>dfccf30a388147ad870d22f9a1b77395</td>
+      <td>234</td>
       <td></td>
       <td>2</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>161613</th>
+      <th>27699</th>
+      <td>offer viewed</td>
+      <td>e1edc9c108f046938ebab83e041fb4b6</td>
+      <td>36</td>
+      <td>fafdcd668e3743c1bb461111dcafc2a4</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>163010</th>
       <td>offer received</td>
-      <td>d916b48f32ea4b4380ea219b3381c70a</td>
+      <td>742c578425d4439c959925de7d219397</td>
       <td>408</td>
+      <td>2906b810c7d4411798c6938adc9daaa5</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>214014</th>
+      <td>offer received</td>
+      <td>a69eec5e79dd401dbbfbb9f29f2cb73c</td>
+      <td>504</td>
+      <td>ae264e3637204a6fb9bb56bc8210ddfd</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>75951</th>
+      <td>offer viewed</td>
+      <td>11d6d468b2674f859538e26d601f745f</td>
+      <td>186</td>
+      <td>2906b810c7d4411798c6938adc9daaa5</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>274053</th>
+      <td>offer completed</td>
+      <td>370c5f0ff5764c9898e22c51748be7fe</td>
+      <td>600</td>
+      <td>9b98b8c7a33c4b65b9aebfe6a799e6d9</td>
+      <td>0</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>215249</th>
+      <td>offer viewed</td>
+      <td>a03b06dbe5eb4cfd9187a4e57abe3701</td>
+      <td>504</td>
       <td>ae264e3637204a6fb9bb56bc8210ddfd</td>
       <td>0</td>
       <td>0</td>
@@ -15368,93 +15369,93 @@ The number of events for only the customers in the profile df:  268791
   </thead>
   <tbody>
     <tr>
-      <th>243294</th>
+      <th>53097</th>
       <td>transaction</td>
-      <td>de938b5f2be14afe96fbf02398907c2c</td>
-      <td>23.75</td>
+      <td>51d6dce2d36b4185a13d0ae5bff178c6</td>
+      <td>6.75</td>
       <td></td>
-      <td>4</td>
+      <td>12</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>40283</th>
+      <th>209100</th>
+      <td>offer received</td>
+      <td>f838af6aec284aad99aee4039f8eb9cf</td>
+      <td>21.00</td>
+      <td>0b1e1539f2cc45b7b9fa7c272da2e1d7</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>230149</th>
       <td>transaction</td>
-      <td>9ae56116908640fc83477982da0aaec4</td>
-      <td>3.75</td>
+      <td>97a351eb00294a7eb63ebdadc0337bdc</td>
+      <td>22.00</td>
       <td></td>
-      <td>9</td>
+      <td>7</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>160500</th>
-      <td>offer received</td>
-      <td>43fbc1418ee14268a5d3797006cc69be</td>
-      <td>17.00</td>
-      <td>f19421c1d4aa40978ebb69ca19b0e20d</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>8626</th>
-      <td>offer received</td>
-      <td>19446b361caa43de84c2aed517457a47</td>
-      <td>0.00</td>
-      <td>5a8bc65990b245e5a138643cd4eb9837</td>
-      <td>0</td>
+      <th>294764</th>
+      <td>transaction</td>
+      <td>d72d201be5794279aa716d8ad82b8d90</td>
+      <td>27.75</td>
+      <td></td>
+      <td>19</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>14535</th>
+      <th>260131</th>
       <td>offer viewed</td>
-      <td>58a71e7f7f554b08bf9fc57d3540c0d9</td>
-      <td>0.00</td>
-      <td>fafdcd668e3743c1bb461111dcafc2a4</td>
+      <td>5fbc773d97144aed8afd89209516e163</td>
+      <td>24.00</td>
+      <td>9b98b8c7a33c4b65b9aebfe6a799e6d9</td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>51804</th>
+      <th>150128</th>
       <td>transaction</td>
-      <td>69414d30b77e4e9181a08909630e41c2</td>
-      <td>6.50</td>
+      <td>3604067a5af745549b026cc2f4434567</td>
+      <td>16.75</td>
       <td></td>
       <td>10</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>51744</th>
+      <th>283399</th>
       <td>offer completed</td>
-      <td>e763002bb9c449df8bfaf5305773029e</td>
-      <td>6.50</td>
-      <td>2298d6c36e964ae4a3e7e9706d1fb8c2</td>
+      <td>2c5210dd46944160a6dec652f8a1b771</td>
+      <td>26.00</td>
+      <td>0b1e1539f2cc45b7b9fa7c272da2e1d7</td>
       <td>0</td>
-      <td>3</td>
+      <td>5</td>
     </tr>
     <tr>
-      <th>115034</th>
-      <td>offer received</td>
-      <td>bf836d9e0ff34ac9a38230fe0f5e189f</td>
-      <td>14.00</td>
-      <td>5a8bc65990b245e5a138643cd4eb9837</td>
+      <th>171675</th>
+      <td>offer viewed</td>
+      <td>015fb0b3fbaa4aceb910fbdf272f7547</td>
+      <td>17.50</td>
+      <td>4d5c57ea9a6940dd891ad53e9dbe8da0</td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>50985</th>
+      <th>133420</th>
+      <td>offer viewed</td>
+      <td>aa3bb8521e3e4c73a1970262f534b833</td>
+      <td>14.75</td>
+      <td>2906b810c7d4411798c6938adc9daaa5</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>281707</th>
       <td>transaction</td>
-      <td>4d4216b868fe43ddb9c9f0b77212c0cb</td>
-      <td>6.25</td>
+      <td>791c42c7a024458eae95a5540f69df14</td>
+      <td>25.75</td>
       <td></td>
-      <td>10</td>
       <td>0</td>
-    </tr>
-    <tr>
-      <th>85013</th>
-      <td>transaction</td>
-      <td>d9da2d2416fc44ac87c506b36c71d921</td>
-      <td>8.75</td>
-      <td></td>
-      <td>34</td>
       <td>0</td>
     </tr>
   </tbody>
@@ -15520,94 +15521,94 @@ The number of events for only the customers in the profile df:  268791
   </thead>
   <tbody>
     <tr>
-      <th>168835</th>
-      <td>offer completed</td>
-      <td>0d24afa153544549ac3117f32fdd9072</td>
-      <td>18.0</td>
-      <td>9b98b8c7a33c4b65b9aebfe6a799e6d9</td>
-      <td>0</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>179137</th>
+      <th>21363</th>
       <td>transaction</td>
-      <td>ee887999446b4d11b717068d00f22847</td>
-      <td>18.0</td>
+      <td>7a5f624f754d4fceb346887164425f1d</td>
+      <td>1.0</td>
       <td></td>
-      <td>30</td>
+      <td>3</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>136983</th>
+      <th>134681</th>
       <td>transaction</td>
-      <td>b5089461bd1a427c8874d5e36d3a2d40</td>
+      <td>e9a439fe041542799040ce7f001a69df</td>
       <td>15.0</td>
       <td></td>
-      <td>9</td>
+      <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>42972</th>
-      <td>transaction</td>
-      <td>cb576b0ddc484c00afd56feb4fb63900</td>
-      <td>5.0</td>
-      <td></td>
-      <td>14</td>
+      <th>296635</th>
+      <td>offer viewed</td>
+      <td>7174aa5c3c4040a090fd8101bf596f3f</td>
+      <td>28.0</td>
+      <td>f19421c1d4aa40978ebb69ca19b0e20d</td>
+      <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>271716</th>
-      <td>offer completed</td>
-      <td>1a6441a8ccd74a81a388841d357b8c0d</td>
-      <td>25.0</td>
-      <td>0b1e1539f2cc45b7b9fa7c272da2e1d7</td>
-      <td>0</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>31294</th>
-      <td>transaction</td>
-      <td>e3534fe180e14735b2199bffefb1887f</td>
-      <td>3.0</td>
-      <td></td>
-      <td>2</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>630</th>
-      <td>offer received</td>
-      <td>b8c17e6e004746a4800eeac73461b1dd</td>
-      <td>0.0</td>
+      <th>73306</th>
+      <td>offer viewed</td>
+      <td>e74cd5a6b1ad4d0da80281689dfa47c3</td>
+      <td>8.0</td>
       <td>ae264e3637204a6fb9bb56bc8210ddfd</td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>23383</th>
-      <td>offer viewed</td>
-      <td>7c04f1c0d5764d878c4301062c245ecd</td>
-      <td>1.0</td>
-      <td>5a8bc65990b245e5a138643cd4eb9837</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>41734</th>
+      <th>102906</th>
       <td>transaction</td>
-      <td>ed8997acdfb743058eac25c251c50da0</td>
-      <td>4.0</td>
+      <td>ab10cdddba53486598f20b32f70acbc6</td>
+      <td>12.0</td>
       <td></td>
-      <td>1</td>
+      <td>4</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>48675</th>
-      <td>offer completed</td>
-      <td>b7e216b6472b46648272c29a52a86702</td>
-      <td>6.0</td>
-      <td>2298d6c36e964ae4a3e7e9706d1fb8c2</td>
+      <th>114392</th>
+      <td>offer received</td>
+      <td>ccd97c93c5544596847e18af79d555ba</td>
+      <td>14.0</td>
+      <td>fafdcd668e3743c1bb461111dcafc2a4</td>
       <td>0</td>
-      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>240729</th>
+      <td>transaction</td>
+      <td>017a93d1204f457bbe85f5e7de062b56</td>
+      <td>24.0</td>
+      <td></td>
+      <td>7</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>271989</th>
+      <td>transaction</td>
+      <td>cef9b883c0c947e88659c9eb361b3250</td>
+      <td>25.0</td>
+      <td></td>
+      <td>28</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>164038</th>
+      <td>offer viewed</td>
+      <td>c4b801ad0dc7440cb51937d281de4dd1</td>
+      <td>17.0</td>
+      <td>f19421c1d4aa40978ebb69ca19b0e20d</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11952</th>
+      <td>offer received</td>
+      <td>415414bb037949cdad37ac07d89f3deb</td>
+      <td>0.0</td>
+      <td>fafdcd668e3743c1bb461111dcafc2a4</td>
+      <td>0</td>
+      <td>0</td>
     </tr>
   </tbody>
 </table>
@@ -15680,47 +15681,47 @@ The number of events for only the customers in the profile df:  268791
   </thead>
   <tbody>
     <tr>
-      <th>241211</th>
-      <td>transaction</td>
-      <td>b74e38d94bd74f90b74da9b359cb7ebd</td>
-      <td>24.0</td>
-      <td></td>
-      <td>28</td>
+      <th>129110</th>
+      <td>offer viewed</td>
+      <td>7b1af561e4654f41a6f33d9df4651b0e</td>
+      <td>15.0</td>
+      <td>fafdcd668e3743c1bb461111dcafc2a4</td>
+      <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>259810</th>
+      <th>105656</th>
       <td>transaction</td>
-      <td>9a3ae3cd8ae84a59bd4ffb201c04977e</td>
-      <td>24.0</td>
+      <td>875bf22eeaba436a840e2a658cd8aab9</td>
+      <td>13.0</td>
       <td></td>
-      <td>23</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>280958</th>
-      <td>offer completed</td>
-      <td>9b5bc512523b457e84446948947cbacc</td>
-      <td>26.0</td>
-      <td>4d5c57ea9a6940dd891ad53e9dbe8da0</td>
-      <td>0</td>
       <td>10</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>66073</th>
-      <td>offer viewed</td>
-      <td>586b6d599e654e369c3d4690f0f3fc30</td>
-      <td>7.0</td>
-      <td>9b98b8c7a33c4b65b9aebfe6a799e6d9</td>
+      <th>71361</th>
+      <td>transaction</td>
+      <td>0a5bf99f04044a00b1c51b0ab02201af</td>
+      <td>8.0</td>
+      <td></td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>137431</th>
+      <th>191196</th>
+      <td>transaction</td>
+      <td>01ff6c5d8d014dbd8c120e2b43a065ea</td>
+      <td>20.0</td>
+      <td></td>
+      <td>22</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>289284</th>
       <td>offer viewed</td>
-      <td>81e9ad5fa55a4884b65e01a5db8f1b4e</td>
-      <td>16.0</td>
-      <td>f19421c1d4aa40978ebb69ca19b0e20d</td>
+      <td>05b1e22c61c849c4bddd497795f2ac37</td>
+      <td>27.0</td>
+      <td>ae264e3637204a6fb9bb56bc8210ddfd</td>
       <td>0</td>
       <td>0</td>
     </tr>
@@ -16085,8 +16086,8 @@ The number of events for only the customers in the profile df:  268791
       <th>offer_reward</th>
       <th>mobile</th>
       <th>social</th>
-      <th>web</th>
       <th>email</th>
+      <th>web</th>
     </tr>
   </thead>
   <tbody>
@@ -16255,8 +16256,8 @@ The number of events for only the customers in the profile df:  268791
       <td>10.0</td>
       <td>1.0</td>
       <td>1.0</td>
-      <td>0.0</td>
       <td>1.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>7</th>
@@ -16399,8 +16400,8 @@ The number of events for only the customers in the profile df:  268791
       <td>10.0</td>
       <td>1.0</td>
       <td>1.0</td>
-      <td>0.0</td>
       <td>1.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>13</th>
@@ -16543,8 +16544,8 @@ The number of events for only the customers in the profile df:  268791
       <td>10.0</td>
       <td>1.0</td>
       <td>1.0</td>
-      <td>0.0</td>
       <td>1.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>19</th>
@@ -16615,8 +16616,8 @@ The number of events for only the customers in the profile df:  268791
       <td>0.0</td>
       <td>1.0</td>
       <td>1.0</td>
-      <td>0.0</td>
       <td>1.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>22</th>
@@ -16711,8 +16712,8 @@ The number of events for only the customers in the profile df:  268791
       <td>10.0</td>
       <td>1.0</td>
       <td>1.0</td>
-      <td>0.0</td>
       <td>1.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>26</th>
@@ -16783,8 +16784,8 @@ The number of events for only the customers in the profile df:  268791
       <td>10.0</td>
       <td>1.0</td>
       <td>1.0</td>
-      <td>0.0</td>
       <td>1.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>29</th>
@@ -17593,8 +17594,8 @@ The number of events for only the customers in the profile df:  268791
 <pre>Index([&#39;event&#39;, &#39;customer_id&#39;, &#39;time&#39;, &#39;offer_id&#39;, &#39;amount&#39;,
        &#39;transcript_reward&#39;, &#39;age&#39;, &#39;became_member_on&#39;, &#39;gender&#39;, &#39;income&#39;,
        &#39;memb_start_year&#39;, &#39;memb_start_month&#39;, &#39;memb_start_day&#39;, &#39;difficulty&#39;,
-       &#39;duration&#39;, &#39;offer_type&#39;, &#39;offer_reward&#39;, &#39;mobile&#39;, &#39;social&#39;, &#39;web&#39;,
-       &#39;email&#39;],
+       &#39;duration&#39;, &#39;offer_type&#39;, &#39;offer_reward&#39;, &#39;mobile&#39;, &#39;social&#39;, &#39;email&#39;,
+       &#39;web&#39;],
       dtype=&#39;object&#39;)</pre>
 </div>
 
@@ -17958,8 +17959,8 @@ The number of events for only the customers in the profile df:  268791
 <pre>Index([&#39;event&#39;, &#39;customer_id&#39;, &#39;time&#39;, &#39;offer_id&#39;, &#39;amount&#39;,
        &#39;transcript_reward&#39;, &#39;age&#39;, &#39;became_member_on&#39;, &#39;gender&#39;, &#39;income&#39;,
        &#39;memb_start_year&#39;, &#39;memb_start_month&#39;, &#39;memb_start_day&#39;, &#39;difficulty&#39;,
-       &#39;duration&#39;, &#39;offer_type&#39;, &#39;offer_reward&#39;, &#39;mobile&#39;, &#39;social&#39;, &#39;web&#39;,
-       &#39;email&#39;, &#39;age_groups&#39;],
+       &#39;duration&#39;, &#39;offer_type&#39;, &#39;offer_reward&#39;, &#39;mobile&#39;, &#39;social&#39;, &#39;email&#39;,
+       &#39;web&#39;, &#39;age_groups&#39;],
       dtype=&#39;object&#39;)</pre>
 </div>
 
@@ -18012,8 +18013,8 @@ offer_type                   object
 offer_reward                float64
 mobile                      float64
 social                      float64
-web                         float64
 email                       float64
+web                         float64
 age_groups                 category
 dtype: object</pre>
 </div>
@@ -18030,7 +18031,6 @@ dtype: object</pre>
 <p>The features will be:</p>
 <ul>
 <li>'event'</li>
-<li>'time'</li>
 <li>'amount'</li>
 <li>'transcript_reward'</li>
 <li>'age'</li>
@@ -18072,7 +18072,7 @@ dtype: object</pre>
 <div class="prompt input_prompt">In&nbsp;[56]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">merged_df</span><span class="p">[[</span><span class="s1">&#39;event&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;amount&#39;</span><span class="p">,</span><span class="s1">&#39;transcript_reward&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;income&#39;</span><span class="p">,</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">merged_df</span><span class="p">[[</span><span class="s1">&#39;event&#39;</span><span class="p">,</span> <span class="s1">&#39;amount&#39;</span><span class="p">,</span><span class="s1">&#39;transcript_reward&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;income&#39;</span><span class="p">,</span>
                <span class="s1">&#39;difficulty&#39;</span><span class="p">,</span> <span class="s1">&#39;duration&#39;</span><span class="p">,</span> <span class="s1">&#39;offer_reward&#39;</span><span class="p">,</span> <span class="s1">&#39;social&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;web&#39;</span><span class="p">,</span> <span class="s1">&#39;mobile&#39;</span><span class="p">]]</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="n">merged_df</span><span class="p">[[</span><span class="s1">&#39;offer_type&#39;</span><span class="p">]]</span>
 </pre></div>
@@ -18270,7 +18270,6 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
     <tr style="text-align: right;">
       <th></th>
       <th>event</th>
-      <th>time</th>
       <th>amount</th>
       <th>transcript_reward</th>
       <th>age</th>
@@ -18287,116 +18286,29 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
   </thead>
   <tbody>
     <tr>
-      <th>7942</th>
-      <td>2</td>
-      <td>0.0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>21</td>
-      <td>0</td>
-      <td>50000.0</td>
-      <td>10.0</td>
-      <td>5.0</td>
-      <td>10.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>103238</th>
-      <td>2</td>
-      <td>21.0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>49</td>
-      <td>1</td>
-      <td>91000.0</td>
-      <td>5.0</td>
-      <td>7.0</td>
-      <td>5.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>4621</th>
-      <td>2</td>
-      <td>0.0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>55</td>
-      <td>1</td>
-      <td>85000.0</td>
-      <td>20.0</td>
-      <td>10.0</td>
-      <td>5.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>62118</th>
+      <th>21942</th>
       <td>3</td>
-      <td>15.0</td>
       <td>0</td>
       <td>0</td>
-      <td>27</td>
+      <td>63</td>
       <td>0</td>
-      <td>59000.0</td>
+      <td>66000.0</td>
       <td>10.0</td>
-      <td>5.0</td>
-      <td>10.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>86666</th>
-      <td>3</td>
-      <td>18.0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>41</td>
-      <td>1</td>
-      <td>73000.0</td>
-      <td>10.0</td>
-      <td>5.0</td>
-      <td>10.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>6947</th>
-      <td>2</td>
-      <td>0.0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>58</td>
-      <td>0</td>
-      <td>34000.0</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>33805</th>
-      <td>2</td>
       <td>7.0</td>
+      <td>10.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>49934</th>
+      <td>2</td>
       <td>0</td>
       <td>0</td>
-      <td>22</td>
-      <td>1</td>
-      <td>55000.0</td>
+      <td>60</td>
+      <td>0</td>
+      <td>54000.0</td>
       <td>0.0</td>
       <td>4.0</td>
       <td>0.0</td>
@@ -18406,54 +18318,131 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
       <td>1.0</td>
     </tr>
     <tr>
-      <th>2548</th>
-      <td>2</td>
+      <th>65311</th>
+      <td>1</td>
+      <td>0</td>
+      <td>5</td>
+      <td>64</td>
+      <td>0</td>
+      <td>37000.0</td>
+      <td>20.0</td>
+      <td>10.0</td>
+      <td>5.0</td>
       <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>81228</th>
+      <td>2</td>
       <td>0</td>
       <td>0</td>
-      <td>78</td>
-      <td>0</td>
-      <td>103000.0</td>
-      <td>10.0</td>
-      <td>7.0</td>
-      <td>10.0</td>
+      <td>60</td>
+      <td>1</td>
+      <td>30000.0</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>0.0</td>
       <td>1.0</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>1.0</td>
     </tr>
     <tr>
-      <th>104320</th>
+      <th>36536</th>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>38</td>
+      <td>1</td>
+      <td>75000.0</td>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>10.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>54806</th>
       <td>2</td>
-      <td>21.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>86</td>
+      <td>1</td>
+      <td>55000.0</td>
+      <td>5.0</td>
+      <td>7.0</td>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>68681</th>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>24</td>
+      <td>1</td>
+      <td>31000.0</td>
+      <td>7.0</td>
+      <td>7.0</td>
+      <td>3.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>109310</th>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>20</td>
+      <td>1</td>
+      <td>39000.0</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>89793</th>
+      <td>1</td>
+      <td>0</td>
+      <td>3</td>
+      <td>64</td>
+      <td>0</td>
+      <td>80000.0</td>
+      <td>7.0</td>
+      <td>7.0</td>
+      <td>3.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>102217</th>
+      <td>2</td>
       <td>0</td>
       <td>0</td>
       <td>58</td>
-      <td>0</td>
-      <td>75000.0</td>
-      <td>10.0</td>
-      <td>7.0</td>
-      <td>2.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>112083</th>
       <td>1</td>
-      <td>22.0</td>
-      <td>0</td>
-      <td>10</td>
-      <td>47</td>
-      <td>0</td>
-      <td>62000.0</td>
-      <td>10.0</td>
+      <td>87000.0</td>
       <td>7.0</td>
-      <td>10.0</td>
+      <td>7.0</td>
+      <td>3.0</td>
       <td>1.0</td>
       <td>1.0</td>
-      <td>0.0</td>
+      <td>1.0</td>
       <td>1.0</td>
     </tr>
   </tbody>
@@ -18481,7 +18470,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
-<span class="n">to_normalize</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;transcript_reward&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;income&#39;</span><span class="p">,</span> <span class="s1">&#39;difficulty&#39;</span><span class="p">,</span> <span class="s1">&#39;duration&#39;</span><span class="p">,</span> <span class="s1">&#39;offer_reward&#39;</span><span class="p">]</span>
+<span class="n">to_normalize</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;transcript_reward&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;income&#39;</span><span class="p">,</span> <span class="s1">&#39;difficulty&#39;</span><span class="p">,</span> <span class="s1">&#39;duration&#39;</span><span class="p">,</span> <span class="s1">&#39;offer_reward&#39;</span><span class="p">]</span>
 
 <span class="n">X</span><span class="p">[</span><span class="n">to_normalize</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">to_normalize</span><span class="p">])</span>
 <span class="n">X</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
@@ -18543,7 +18532,6 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
     <tr style="text-align: right;">
       <th></th>
       <th>event</th>
-      <th>time</th>
       <th>amount</th>
       <th>transcript_reward</th>
       <th>age</th>
@@ -18560,82 +18548,77 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
   </thead>
   <tbody>
     <tr>
-      <th>16846</th>
-      <td>1</td>
-      <td>0.033333</td>
-      <td>0.0</td>
-      <td>0.5</td>
-      <td>0.240964</td>
-      <td>0</td>
-      <td>0.411111</td>
-      <td>0.25</td>
-      <td>0.285714</td>
-      <td>0.5</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>109353</th>
-      <td>3</td>
-      <td>0.733333</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.855422</td>
-      <td>0</td>
-      <td>0.577778</td>
-      <td>0.35</td>
-      <td>0.571429</td>
-      <td>0.3</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>101564</th>
+      <th>119662</th>
       <td>2</td>
-      <td>0.700000</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.120482</td>
+      <td>0.084337</td>
+      <td>0</td>
+      <td>0.400000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>54806</th>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.819277</td>
       <td>1</td>
-      <td>0.055556</td>
-      <td>1.00</td>
-      <td>1.000000</td>
+      <td>0.277778</td>
+      <td>0.25</td>
+      <td>0.571429</td>
       <td>0.5</td>
       <td>0.0</td>
       <td>1.0</td>
       <td>1.0</td>
-      <td>0.0</td>
+      <td>1.0</td>
     </tr>
     <tr>
-      <th>36448</th>
-      <td>3</td>
-      <td>0.233333</td>
+      <th>78471</th>
+      <td>2</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.265060</td>
-      <td>0</td>
+      <td>0.566265</td>
+      <td>1</td>
       <td>0.477778</td>
-      <td>0.50</td>
-      <td>1.000000</td>
-      <td>0.2</td>
-      <td>1.0</td>
+      <td>0.00</td>
+      <td>0.142857</td>
+      <td>0.0</td>
+      <td>0.0</td>
       <td>1.0</td>
       <td>1.0</td>
       <td>1.0</td>
     </tr>
     <tr>
-      <th>114036</th>
+      <th>110134</th>
       <td>3</td>
-      <td>0.733333</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.036145</td>
+      <td>0.771084</td>
+      <td>1</td>
+      <td>0.277778</td>
+      <td>0.50</td>
+      <td>0.571429</td>
+      <td>0.2</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>19917</th>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.421687</td>
       <td>0</td>
-      <td>0.155556</td>
+      <td>0.166667</td>
       <td>0.50</td>
       <td>1.000000</td>
       <td>0.2</td>
@@ -18679,12 +18662,13 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Metrics">Metrics<a class="anchor-link" href="#Metrics">&#182;</a></h2><p>For the metrics used in this project, I'll use the accuracy. It will provide a good insight on wiether the model is doing well by computing the number of correctly predicted target over the total number of predictions.</p>
-<h2 id="Model-selection">Model selection<a class="anchor-link" href="#Model-selection">&#182;</a></h2><p>I'll compare 3 different models to see which one performs the best for this problem:</p>
+<h2 id="Metrics">Metrics<a class="anchor-link" href="#Metrics">&#182;</a></h2><p>For the metrics used in this project, I'll use the F1 score. It will provide a good insight on wiether the model is doing well or not. I'll use the F1 score instead of the accuracy since the data is imbalanced. This can be seen the EDA done above. The F1 score is an expression of precesion and recall, and they perform well with the imbalanced data.</p>
+<h2 id="Model-selection">Model selection<a class="anchor-link" href="#Model-selection">&#182;</a></h2><p>I'll compare 4 different models to see which one performs the best for this problem:</p>
 <ol>
 <li>Logistic Regressuin.</li>
 <li>Desicion Tree Classifier.</li>
 <li>SVM.</li>
+<li>Random Forest Classifier</li>
 </ol>
 
 </div>
@@ -18717,14 +18701,14 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
     <span class="n">predictions_train</span> <span class="o">=</span> <span class="n">learner</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
             
     <span class="c1"># Compute accuracy on the training set</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;acc_train&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">predictions_train</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;f1_train&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">predictions_train</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;micro&#39;</span><span class="p">)</span>
         
     <span class="c1"># Compute accuracy on test set using accuracy_score()</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;acc_test&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions_test</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;f1_test&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions_test</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;micro&#39;</span><span class="p">)</span>
     
     <span class="c1"># Success</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy of </span><span class="si">{}</span><span class="s2"> classifier on training set:</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">learner</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;acc_train&#39;</span><span class="p">]))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy of </span><span class="si">{}</span><span class="s2"> classifier on test set:</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">learner</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;acc_test&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;F1 score of </span><span class="si">{}</span><span class="s2"> classifier on training set:</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">learner</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;f1_train&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;F1 score of </span><span class="si">{}</span><span class="s2"> classifier on test set:</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">learner</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;f1_test&#39;</span><span class="p">]))</span>
     <span class="c1"># Return the results</span>
     
     <span class="k">return</span> <span class="n">results</span>
@@ -18742,9 +18726,10 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf_LG</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">clf_DT</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">clf_SVC</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf_LG</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">clf_DT</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">clf_SVC</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">clf_RF</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -18758,7 +18743,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="p">[</span><span class="n">clf_LG</span><span class="p">,</span> <span class="n">clf_DT</span><span class="p">,</span> <span class="n">clf_SVC</span><span class="p">]:</span>
+<span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="p">[</span><span class="n">clf_LG</span><span class="p">,</span> <span class="n">clf_DT</span><span class="p">,</span> <span class="n">clf_SVC</span><span class="p">,</span> <span class="n">clf_RF</span><span class="p">]:</span>
     <span class="n">clf_name</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="n">results</span><span class="p">[</span><span class="n">clf_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">results</span><span class="p">[</span><span class="n">clf_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_predict</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
@@ -18790,12 +18775,36 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Accuracy of LogisticRegression classifier on training set:1.0.
-Accuracy of LogisticRegression classifier on test set:1.0.
-Accuracy of DecisionTreeClassifier classifier on training set:1.0.
-Accuracy of DecisionTreeClassifier classifier on test set:1.0.
-Accuracy of SVC classifier on training set:1.0.
-Accuracy of SVC classifier on test set:1.0.
+<pre>F1 score of LogisticRegression classifier on training set:1.0.
+F1 score of LogisticRegression classifier on test set:1.0.
+F1 score of DecisionTreeClassifier classifier on training set:1.0.
+F1 score of DecisionTreeClassifier classifier on test set:1.0.
+F1 score of SVC classifier on training set:1.0.
+F1 score of SVC classifier on test set:1.0.
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/opt/conda/lib/python3.6/site-packages/ipykernel_launcher.py:14: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
+  
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>F1 score of RandomForestClassifier classifier on training set:1.0.
+F1 score of RandomForestClassifier classifier on test set:1.0.
 </pre>
 </div>
 </div>
@@ -18807,6 +18816,20 @@ Accuracy of SVC classifier on test set:1.0.
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>These values indicate an issue, since all the models in both training and testing score 100%. There is a data leakage to the model. After reading couple of resources about the leakage and how to prevent it, I tested the following:</p>
+<ul>
+<li>Eliminate the ‘time’ column from the features since it introduces a predictability to the model without a meaning.</li>
+<li>Tested feature importance methods (Decision tree based and RFE based) to determine which features influence this issue.</li>
+<li>Since the data is small, I did some cross validation using ‘Kfolds’ method to train the models.</li>
+</ul>
+<p>But the issue was not resolved. It still gave the same results. These tests confirmed that the issue is from the data frame itself, the preprocessing was not refined.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Comments-and-improvements">Comments and improvements<a class="anchor-link" href="#Comments-and-improvements">&#182;</a></h2><p>The classification models are achieving 100% accuracy, which means that they are overfitted to the data in hand. This is for couple of reasons:</p>
 <ul>
 <li>The number of data used in this fitting is not enough (after the drop of 45% of the merged_df).</li>
@@ -18814,6 +18837,7 @@ Accuracy of SVC classifier on test set:1.0.
 </ul>
 <p>Also, the transcript dataset has a an event called transactions. And since my problem is about predicting the best offer type for each user, I couldn't use this event which apears to be the most available event in the df (based of the EDA above).</p>
 <p>Another issue I suspect is in the merging of the dfs. I don't belive that the method I used is the best one, it barely merged the dfs on the common key. A better way to do it is by iterating through the transcript df and using the customer id to lookup the customer demographic data to add them to each transcript. Then using the offer id do the same process to get the offer info from the portfolio df. Due to the limited time, I was not able to do this. Also, it will take a lot of time to go through the huge number of rows.</p>
+<p>Recommendation engines with its different types may produce better results than using classification models. It can recommend an offer based on the similar customer’s behavior and demographics. The customer can input their preferences which would refine the recommendation process.</p>
 
 </div>
 </div>
