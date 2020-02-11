@@ -29,8 +29,13 @@ This is part of Udacity Nanodegree Capstone Project. The aim is develop a set of
 
 ## Results <a name="results"></a>
 The main findings of the analysis are:</br>
-*  </br>
-*  </br>
+* The largest age group in the customers data are between 48 to 70 as they have above 200 user per age (up to 400). </br>
+* Most of the customers are males. </br>
+* The customers income is mostly middle class, and the number of low income customers is higher than the high income customers. </br>
+* The number of profiles is increasing yearly but it dropped at the last year which may be due to the offer types are not interesting anymore. </br>
+* The order at which both genders and all age groups prefer the offers is: BOGO, discount, then informational. </br>
+* The most recurring event is the transaction event by approximately 50% more than the other events. </br>
+* Females complete offers more than males.</br>
 * The models selected were overfitted to the dataset even though the models were simple. Thus, no model were selected to predict the offer type. </br>
 
 For more details, please check the post available [here](https://medium.com/@MaysamF/starbucks-capstone-challenge-9003c9422a76)
